@@ -81,7 +81,7 @@ app.use(passport.session());
 
 // Set root route
 app.get('/', function (req, res) {
-    res.render('pages/index');
+    res.render('pages/index', { user: req.user });
 });
 
 // Twitter OAuth
@@ -93,6 +93,13 @@ app.get('/login/twitter/return',
   function(req, res) {
     res.redirect('/dashboard');
   });
+
+// Log Out
+app.get('/logout', function (req, res){
+  req.session.destroy(function (err) {
+    res.redirect('/');
+  });
+});
 
 // User Dashboard
 app.get('/dashboard',
