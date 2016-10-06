@@ -75,6 +75,8 @@ app.use(require('express-session')({ secret: process.env.SECRET, resave: true, s
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+
 // ** Routes **
 
 // Set root route
@@ -87,16 +89,16 @@ app.get('/login/twitter', passport.authenticate('twitter'));
 
 // Twitter OAuth Callback
 app.get('/login/twitter/return', 
-  passport.authenticate('twitter', { failureRedirect: '/login' }),
+  passport.authenticate('twitter', { failureRedirect: '/' }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('/dashboard');
   });
 
 // User Dashboard
 app.get('/dashboard',
   require('connect-ensure-login').ensureLoggedIn(),
   function(req, res){
-    res.render('pages/index', { user: req.user });
+    res.render('pages/dashboard', { user: req.user });
   });
 
 // Redirect undefined routes to root
