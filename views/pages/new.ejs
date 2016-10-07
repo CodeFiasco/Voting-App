@@ -34,7 +34,7 @@
                     <h1 class="text-center">New Poll:</h1>
                     <form action="/new">
                         <div class="form-group">
-                            <label for="">Poll Title:</label>
+                            <label for="">Poll Question:</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="glyphicon glyphicon-stats"></i>
@@ -42,7 +42,9 @@
                                 <input type="text" name="title" autocomplete="off" class="form-control" id="poll-title">
                             </div>
                         </div>
-                        <div id="options-list"></div>
+                        <div id="options-list" class="form-group">
+                            <label for="">Current Options:</label>
+                        </div>
                         <div class="form-group">
                             <label for="">Add Option:</label>
                             <div class="input-group" id="add-option-group">

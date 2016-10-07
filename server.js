@@ -26,18 +26,22 @@ mongoose.connect('mongodb://' + process.env.MLUSER + ':' + process.env.MLPW + '@
 // Set schemas for mongo db
 var Schema = mongoose.Schema;
 
-// Poll schema
-var pollSchema = new Schema({
-    title: String,
-    author: String,
-    options: [{
-        optionName: String,
-        optionVotes: Number 
-    }],
-    votedUsers: [{
-        userIp: String
-    }]
+// Vote schema
+var voteSchema = new mongoose.Schema({ ip: 'String' });
+
+// Options schema
+var optionSchema = new mongoose.Schema({ 
+  text: String
 });
+
+// Poll schema
+var pollSchema = new mongoose.Schema({
+  question: { type: String, required: true },
+  choices: [choiceSchema],
+  votes: [voteSchema],
+  authorId: String
+});
+
 var Poll = mongoose.model('Poll', pollSchema);
 
 // Setup authentication
@@ -118,6 +122,16 @@ app.get('/new',
         res.render('pages/new', {
             user: req.user,
             errors: null
+        })
+    });
+
+app.post('/new',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        console.log( req.params)
+        res.render('pages/dashboard', {
+            user: req.user,
+            errors: ['success', 'or is it?']
         })
     });
 
