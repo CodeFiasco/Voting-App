@@ -36,7 +36,7 @@ $(document).ready(function () {
 
         options = options.join('#@#');
 
-        $('add-option').val(options);
+        $('#input-option').val(options);
 
         $('#poll-form').submit();
 

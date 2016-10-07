@@ -134,14 +134,14 @@ app.post('/new',
             errors.push('Title required;')
         }
 
-        if (!req.body.option) {
+        if (!req.body.options) {
             errors.push('Options required;');
         }
         else{
-            var arrayOfOptions = req.body.option
+            var arrayOfOptions = req.body.options.split('#@#');
 
             if (arrayOfOptions.length < 2) {
-                errors.push(req.body.option /*'Enter at least 2 options'*/);
+                errors.push('Enter at least 2 options');
             }
         }
         
@@ -153,7 +153,7 @@ app.post('/new',
                 });
         }
         else{
-            res.send('Your input: ' + req.body.title + ';' + req.body.option)
+            res.send('Your input: ' + req.body.title + ';' + req.body.options)
         }
         
     });
