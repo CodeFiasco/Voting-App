@@ -122,7 +122,7 @@ app.get('/dashboard',
             });
         });
     });
-
+    
 // New Poll
 app.get('/new',
     require('connect-ensure-login').ensureLoggedIn(),
@@ -217,17 +217,10 @@ app.post('/poll', function (req, res) {
 app.delete('/poll',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        Poll.findById(req.body.pollId, function (err, poll) {
+        Poll.findByIdAndRemove(req.body.pollId, function (err, poll) {
             if (err) throw err;
             
-            if (req.user.id != poll.authorId) {
-                res.redirect('/poll/' + req.body.pollId);
-            }
-            else {
-                poll.remove(function () {
-                    res.redirect('/dashboard');
-                });
-            }
+            res.redirect('/dashboard');
         }); 
     });
 
