@@ -214,13 +214,20 @@ app.post('/poll', function (req, res) {
     });    
 });
 
-app.delete('/poll',
+app.post('/poll/delete',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        Poll.findByIdAndRemove(req.body.pollId, function (err, poll) {
+        Poll.findById(req.body.pollId, function (err, poll) {
             if (err) throw err;
             
-            res.redirect('/dashboard');
+            if (req.user.id != poll.authorId) {
+                res.redirect('/poll/' + req.body.pollId);
+            }
+            else {
+                poll.remove(function () {
+                    res.redirect('/dashboard');
+                });
+            }
         }); 
     });
 
