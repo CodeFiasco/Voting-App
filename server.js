@@ -86,14 +86,12 @@ app.use(passport.session());
 
 // Set root route
 app.get('/', function (req, res) {
-console.log("qwe");
     Poll.find({}, function (err, polls) {
         res.render('pages/index', {
         user: req.user,
         polls: polls
         });
     });
-    
 });
 
 // Twitter OAuth
@@ -117,7 +115,12 @@ app.get('/logout', function (req, res){
 app.get('/dashboard',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('pages/dashboard', { user: req.user });
+        Poll.find({ authorId: req.user.id}, function (err, polls) {
+            res.render('pages/dashboard', {
+            user: req.user,
+            polls: polls
+            });
+        });
     });
 
 // New Poll
