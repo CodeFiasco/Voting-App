@@ -50,8 +50,8 @@ var passport = require('passport');
 var Strategy = require('passport-twitter').Strategy;
 
 passport.use(new Strategy({
-        consumerKey: process.env.CONSUMER_KEY,
-        consumerSecret: process.env.CONSUMER_SECRET,
+        consumerKey: process.env.CONSUMER_KEY || CONSUMER_KEY,
+        consumerSecret: process.env.CONSUMER_SECRET || CONSUMER_SECRET,
         callbackURL: 'https://codefiasco-polls.herokuapp.com/login/twitter/return'
     },
     function(token, tokenSecret, profile, cb) {
@@ -73,7 +73,7 @@ passport.deserializeUser(function(obj, cb) {
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ secret: process.env.SECRET, resave: true, saveUninitialized: true }));
+app.use(require('express-session')({ secret: process.env.SECRET || SECRET, resave: true, saveUninitialized: true }));
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
@@ -86,10 +86,14 @@ app.use(passport.session());
 
 // Set root route
 app.get('/', function (req, res) {
-    res.render('pages/index', {
+console.log("qwe");
+    Poll.find({}, function (err, polls) {
+        res.render('pages/index', {
         user: req.user,
-        polls: Poll.find({})
+        polls: polls
+        });
     });
+    
 });
 
 // Twitter OAuth

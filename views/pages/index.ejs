@@ -14,15 +14,20 @@
                 <p>Create your own polls and participate in other user's polls!</p>
             </div>
             <% if (polls.length > 0) { %>
-                <ul class="list-group">
-                    <% for (var i=0; i < polls.length; i++) { %>
-                        <li class="list-group-item">
-                            <a href="/poll/<%= polls[i].id %>">
-                                <%= polls[i].question %>
-                            </a>
-                        </li>
-                    <% } %>
-                </ul>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4 well">
+                        <h2>Current Polls:</h2>
+                        <ul class="list-group">
+                            <% for (var i=0; i < polls.length; i++) { %>
+                                <li class="list-group-item">
+                                    <a class="list-link"href="/poll/<%= polls[i].id %>">
+                                        <%= polls[i].question %>
+                                    </a>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
             <% } %>
         </main>
     </div>
