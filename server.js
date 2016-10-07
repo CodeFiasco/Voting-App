@@ -126,8 +126,22 @@ app.get('/new',
     });
 
 app.post('/new',
+    require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.send('Your input: ' + req.body.title + ';' + req.body.options)
+        var arrayOfOptions = req.body.options.match(/[^\r\n]+/g);
+
+        if (arrayOfOptions.length < 2) {
+            res.render('pages/new', {
+            user: req.user,
+            errors: [
+                'Enter at least 2 options;'
+            ]
+            });
+        }
+        else{
+            res.send('Your input: ' + req.body.title + ';' + req.body.options)
+        }
+        
     });
 
 // Redirect undefined routes to root
