@@ -2,7 +2,7 @@ function addPollOption (option) {
     var html = $(
         '<div id="poll-option">' +
             '<div class="input-group">' +
-                '<input type="text" name="option" autocomplete="off" class="form-control" disabled placeholder="' + option + '">' +
+                '<input type="text" name="option" autocomplete="off" class="form-control" disabled value="' + option + '">' +
                 '<span class="input-group-btn">' +
                     '<button class="btn btn-default remove-option" type="button">' +
                         '<i class="glyphicon glyphicon-remove-circle"></i>' +
@@ -31,12 +31,15 @@ $(document).ready(function () {
         var options = [];
 
         optionsInputs.each(function(){
-            options.push($(this).attr('placeholder'))
+            options.push($(this).attr('value'))
         });
 
-        $('#poll-form').submit([
-            { user: "another" }
-        ]);
+        options = options.join('#@#');
+
+        $('add-option').val(options);
+
+        $(this).submit();
+
     });
 
     $('#add-option').click(function () {
