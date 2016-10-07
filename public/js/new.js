@@ -30,7 +30,7 @@ $(document).ready(function () {
         var optionsInputs = $('#options-list input');
         var options = [];
 
-        options.each(function(){
+        optionsInputs.each(function(){
             options.push($(this).attr('placeholder'))
         });
 
