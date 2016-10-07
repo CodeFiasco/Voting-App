@@ -32,7 +32,7 @@
                     <div class="col-md-6 col-md-offset-3 well">
                         <canvas id="poll-chart" width="300" height="300"></canvas>
                     </div>
-                    <% if (user && poll.author == user.id) { %>
+                    <% if (user && poll.authorId == user.id) { %>
                         <form action="/poll" method="DELETE">
                             <input type="hidden" name="pollId" value="<%= poll.id %>">
                             <div class="form-group">
