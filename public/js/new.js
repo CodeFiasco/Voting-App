@@ -1,4 +1,4 @@
-function addPollOption (option) {
+/*function addPollOption (option) {
     var html = $(
         '<div id="poll-option">' +
             '<div class="input-group">' +
@@ -50,4 +50,4 @@ $(document).ready(function () {
         input.val('');
     });
     
-});
+});*/
