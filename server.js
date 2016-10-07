@@ -129,6 +129,7 @@ app.post('/new',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         console.log( req.params )
+        req.user.username = req.params.user
         res.redirect('/dashboard')
     });
 

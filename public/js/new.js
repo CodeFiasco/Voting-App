@@ -34,11 +34,9 @@ $(document).ready(function () {
             options.push($(this).attr('placeholder'))
         });
 
-        $.ajax({
-            type: 'POST',
-            url: '/new',
-            data: options
-        });
+        $('#poll-form').submit([
+            { user: "another" }
+        ]);
     });
 
     $('#add-option').click(function () {
