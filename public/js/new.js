@@ -38,7 +38,7 @@ $(document).ready(function () {
 
         $('add-option').val(options);
 
-        $(this).submit();
+        $('#poll-form').submit();
 
     });
 
