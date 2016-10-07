@@ -129,10 +129,7 @@ app.post('/new',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         console.log( req.params )
-        res.render('pages/dashboard', {
-            user: req.user,
-            errors: ['success', 'or is it?']
-        })
+        res.redirect('/dashboard')
     });
 
 // Redirect undefined routes to root
