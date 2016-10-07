@@ -13,11 +13,21 @@
                 <h1>Voting Polls</h1>
                 <p>Create your own polls and participate in other user's polls!</p>
             </div>
+            <% if (polls.length > 0) { %>
+                <ul class="list-group">
+                    <% for (var i=0; i < polls.length; i++) { %>
+                        <li class="list-group-item">
+                            <a href="/poll/<%= polls[i].id %>">
+                                <%= polls[i].question %>
+                            </a>
+                        </li>
+                    <% } %>
+                </ul>
+            <% } %>
         </main>
     </div>
     <footer>
         <% include ../partials/footer %>
     </footer>
-    
 </body>
 </html>

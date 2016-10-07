@@ -21,7 +21,7 @@ app.set('view engine', 'ejs');
 
 // Import mongoose and connect to database
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://' + process.env.MLUSER + ':' + process.env.MLPW + '@ds053146.mlab.com:53146/codefiasco-sites');
+mongoose.connect('mongodb://' + process.env.MLUSER + ':' + process.env.MLPW + '@ds053216.mlab.com:53216/codefiasco-voting');
 
 // Set schemas for mongo db
 var Schema = mongoose.Schema;
