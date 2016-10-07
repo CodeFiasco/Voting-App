@@ -30,9 +30,9 @@ $(document).ready(function () {
         var optionsInputs = $('#options-list input');
         var options = [];
 
-        for (var i=0; i < optionsInputs.length; i++) {
-            options.push(optionsInputs[i].val());
-        }
+        options.each(function(){
+            options.push($(this).attr('placeholder'))
+        });
 
         $.ajax({
             type: 'POST',
