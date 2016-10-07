@@ -214,6 +214,23 @@ app.post('/poll', function (req, res) {
     });    
 });
 
+app.delete('/poll',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        Poll.findById(req.body.pollId, function (err, poll) {
+            if (err) throw err;
+            
+            if (req.user.id != poll.authorId) {
+                res.redirect('/poll/' + req.body.pollId);
+            }
+            else {
+                poll.remove(function () {
+                    res.redirect('/dashboard');
+                });
+            }
+        }); 
+    });
+
 // Redirect undefined routes to root
 app.get('*', function (req, res) {
     res.redirect('/');
