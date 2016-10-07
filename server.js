@@ -115,7 +115,10 @@ app.get('/dashboard',
 app.get('/new',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('pages/new', { user: req.user })
+        res.render('pages/new', {
+            user: req.user,
+            errors: null
+        })
     });
 
 // Redirect undefined routes to root
