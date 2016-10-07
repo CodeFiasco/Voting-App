@@ -37,7 +37,7 @@ var optionSchema = new mongoose.Schema({
 // Poll schema
 var pollSchema = new mongoose.Schema({
   question: { type: String, required: true },
-  choices: [choiceSchema],
+  choices: [optionSchema],
   votes: [voteSchema],
   authorId: String
 });
@@ -128,7 +128,7 @@ app.get('/new',
 app.post('/new',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        console.log( req.params)
+        console.log( req.params )
         res.render('pages/dashboard', {
             user: req.user,
             errors: ['success', 'or is it?']
