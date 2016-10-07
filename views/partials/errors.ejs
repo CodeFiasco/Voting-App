@@ -1,0 +1,20 @@
+<% if (errors) { %>
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+            <h2 class="panel-title">
+                Could not save poll:
+            </h2>
+            <div class="panel-body">
+                <ul>
+                    <% for (var i=0; i < errors.length; i++) { %>
+                        <li><%= errors[i] %></li>
+                    <% } %>
+                </ul>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+<% } %>

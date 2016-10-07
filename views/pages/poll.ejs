@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <% include ../partials/head %>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <% include ../partials/header %>
+        </header>
+        <div class="container">
+            <main>
+                <div class="row">
+                    <h1 class="text-center"><%= poll.question %></h1>
+                    <div class="col-md-4 col-md-offset-4 well">
+                        <form action="/poll" method="POST">
+                            <input type="hidden" name="pollId" value="<%= poll.id %>">
+                            <div class="form-group">
+                                <% for (var i=0; i < poll.choices.length; i++) { %>
+                                    <div class="radio">
+                                        <label><input type="radio" name="optionIdx" value="<%= i %>"><%= poll.choices[i].option %></label>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Vote!" class="btn btn-primary">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 well">
+                        <canvas id="poll-chart" width="300" height="300"></canvas>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <footer>
+            <% include ../partials/footer %>
+        </footer>
+    </body>
+    <script>
+        $(document).ready(function () {
+            var ctx = $('#poll-chart');
+            var optionArray = [];
+            var votesArray = [];
+
+            <% for (var i=0; i < poll.choices.length; i++) { %>
+                optionArray.push('<%= poll.choices[i].option %>');
+                votesArray.push(<%= poll.choices[i].votes %>);
+            <% } %>
+
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: optionArray,
+                    datasets: [{
+                        label: '# of Votes',
+                        data: votesArray,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                }
+            });
+        });
+    </script>
+</html>

@@ -191,6 +191,29 @@ app.post('/new',
         
     });
 
+app.get('/poll/:id', function (req, res) {
+    Poll.findById(req.params.id, function (err, poll) {
+        if (err) throw err;
+        res.render('pages/poll', {
+            user: req.user,
+            poll: poll
+        });
+    });    
+});
+
+app.post('/poll', function (req, res) {
+    Poll.findById(req.body.pollId, function (err, poll) {
+        if (err) throw err;
+        
+        poll.choices[req.body.optionIdx].votes += 1;
+        poll.save(function (err) {
+            if (err) throw err;
+
+            res.redirect('/poll/' + req.body.pollId);
+        });
+    });    
+});
+
 // Redirect undefined routes to root
 app.get('*', function (req, res) {
     res.redirect('/');
