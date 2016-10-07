@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body>
+    <header>
+        <% include ../partials/header %>
+    </header>
+    <div class="container">
+        <main>
+            <% if (errors) { %>
+                <div class="row">
+                    <div class="col-xs-8 col-xs-offset-2">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                        <h2 class="panel-title">
+                            Could not save poll:
+                        </h2>
+                        <div class="panel-body">
+                            <ul>
+                                <% for (var i=0; i < errors.length; i++) { %>
+                                    <li><%= errors[i] %></li>
+                                <% } %>
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            <% } %>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 well">
+                    <h1 class="text-center">New Poll:</h1>
+                    <form action="/new">
+                        <div class="form-group">
+                            <label for="">Poll Title:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-stats"></i>
+                                </span>
+                                <input type="text" name="title" autocomplete="off" class="form-control" id="poll-title">
+                            </div>
+                        </div>
+                        <div id="options-list"></div>
+                        <div class="form-group">
+                            <label for="">Add Option:</label>
+                            <div class="input-group" id="add-option-group">
+                                <input type="text" name="option" autocomplete="off" class="form-control">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" id="add-option">
+                                        <i class="glyphicon glyphicon-plus-sign"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Join Chat" class="btn btn-primary btn-block" id="poll-submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+    <script src="/assets/js/new.js"></script>
+</body>
+</html>

@@ -28,7 +28,7 @@ var Schema = mongoose.Schema;
 
 // Poll schema
 var pollSchema = new Schema({
-    name: String,
+    title: String,
     author: String,
     options: [{
         optionName: String,
@@ -81,7 +81,10 @@ app.use(passport.session());
 
 // Set root route
 app.get('/', function (req, res) {
-    res.render('pages/index', { user: req.user });
+    res.render('pages/index', {
+        user: req.user,
+        polls: Poll.find({})
+    });
 });
 
 // Twitter OAuth
@@ -89,24 +92,31 @@ app.get('/login/twitter', passport.authenticate('twitter'));
 
 // Twitter OAuth Callback
 app.get('/login/twitter/return', 
-  passport.authenticate('twitter', { failureRedirect: '/' }),
-  function(req, res) {
-    res.redirect('/dashboard');
-  });
+    passport.authenticate('twitter', { failureRedirect: '/' }),
+    function(req, res) {
+        res.redirect('/dashboard');
+    });
 
 // Log Out
 app.get('/logout', function (req, res){
-  req.session.destroy(function (err) {
-    res.redirect('/');
-  });
+    req.session.destroy(function (err) {
+        res.redirect('/');
+    });
 });
 
 // User Dashboard
 app.get('/dashboard',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
-    res.render('pages/dashboard', { user: req.user });
-  });
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('pages/dashboard', { user: req.user });
+    });
+
+// New Poll
+app.get('/new',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('pages/new')
+    });
 
 // Redirect undefined routes to root
 app.get('*', function (req, res) {
