@@ -128,15 +128,29 @@ app.get('/new',
 app.post('/new',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        var arrayOfOptions = req.body.options.match(/[^\r\n]+/g);
+        var errors = [];
 
-        if (arrayOfOptions.length < 2) {
+        if(!req.body.title){
+            errors.push('Title required;')
+        }
+
+        if (!req.body.options) {
+            errors.push('Options required;');
+        }
+        else{
+            var arrayOfOptions = req.body.options.match(/[^\r\n]+/g);
+
+            if (arrayOfOptions.length < 2) {
+                errors.push('Enter at least 2 options');
+            }
+        }
+        
+
+        if (errors.length > 0) {
             res.render('pages/new', {
-            user: req.user,
-            errors: [
-                'Enter at least 2 options;'
-            ]
-            });
+                user: req.user,
+                errors: errors
+                });
         }
         else{
             res.send('Your input: ' + req.body.title + ';' + req.body.options)
