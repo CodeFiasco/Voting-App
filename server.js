@@ -126,7 +126,6 @@ app.get('/new',
     });
 
 app.post('/new',
-    require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         res.send('Your input: ' + req.body.title + ';' + req.body.options)
     });
