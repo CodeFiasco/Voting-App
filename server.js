@@ -31,14 +31,15 @@ var voteSchema = new mongoose.Schema({ ip: 'String' });
 
 // Options schema
 var optionSchema = new mongoose.Schema({ 
-  text: String
+  option: String,
+  votes: Number
 });
 
 // Poll schema
 var pollSchema = new mongoose.Schema({
   question: { type: String, required: true },
   choices: [optionSchema],
-  votes: [voteSchema],
+  votedIps: [voteSchema],
   authorId: String
 });
 
@@ -129,6 +130,7 @@ app.post('/new',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         var errors = [];
+        var arrayOfOptions;
 
         if(!req.body.title){
             errors.push('Title required;')
@@ -138,7 +140,7 @@ app.post('/new',
             errors.push('Options required;');
         }
         else{
-            var arrayOfOptions = req.body.options.split('#@#');
+             arrayOfOptions = req.body.options.split('#@#');
 
             if (arrayOfOptions.length < 2) {
                 errors.push('Enter at least 2 options');
@@ -153,7 +155,31 @@ app.post('/new',
                 });
         }
         else{
-            res.send('Your input: ' + req.body.title + ';' + req.body.options)
+            var options = []
+
+            for (var i=0; i < arrayOfOptions.length; i++) {
+                var opt = {
+                    option: arrayOfOptions[i],
+                    votes: 0
+                }
+
+                options.push(opt);
+            }
+
+            var newPoll = Poll({
+                question: req.body.title,
+                choices: options,
+                votes: [],
+                authorId: req.user.id
+            });
+
+            newPoll.save(function (err) {
+                if (err) throw err;
+                
+                console.log('New Poll Saved!');
+
+                res.redirect('/dashboard');
+            });
         }
         
     });
