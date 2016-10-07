@@ -4,7 +4,7 @@ function addPollOption (option) {
             '<div class="input-group">' +
                 '<input type="text" name="option" autocomplete="off" class="form-control" disabled placeholder="' + option + '">' +
                 '<span class="input-group-btn">' +
-                    '<button class="btn btn-default" type="button" class="remove-option">' +
+                    '<button class="btn btn-default remove-option" type="button">' +
                         '<i class="glyphicon glyphicon-remove-circle"></i>' +
                     '</button>' +
                 '</span>' +
