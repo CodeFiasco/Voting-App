@@ -7,9 +7,8 @@
     font-weight: bold;
 }
 
-.navbar-logo span:hover{
+.navbar-logo:hover span{
     color: #f0f0f0;
-    text-decoration: underline;
 }
 
 .jumbotron{
