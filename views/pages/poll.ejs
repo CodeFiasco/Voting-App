@@ -10,35 +10,53 @@
         </header>
         <div class="container">
             <main>
-                <div class="row">
-                    <h1 class="text-center"><%= poll.question %></h1>
-                    <div class="col-md-4 col-md-offset-4 well">
-                        <form action="/poll" method="POST">
-                            <input type="hidden" name="pollId" value="<%= poll.id %>">
-                            <div class="form-group">
-                                <% for (var i=0; i < poll.choices.length; i++) { %>
-                                    <div class="radio">
-                                        <label><input type="radio" name="optionIdx" value="<%= i %>"><%= poll.choices[i].option %></label>
+                <div class="jumbotron">
+                    <div class="row">
+                        <div class="col-md-4 well">
+                            <h3><%= poll.question %></h3>
+                            <form id="vote-form" action="/poll" method="POST">
+                                <input type="hidden" name="pollId" value="<%= poll.id %>">
+                                <div class="form-group">
+                                    <% for (var i=0; i < poll.choices.length; i++) { %>
+                                        <div class="radio">
+                                            <label><input type="radio" name="optionIdx" value="<%= i %>"><%= poll.choices[i].option %></label>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </form>
+                            <% if (user) { %>
+                                <form action="/poll/add" method="POST" id="add-form">
+                                    <input type="hidden" name="pollId" value="<%= poll.id %>">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input name="option" autocomplete="off" placeholder="Add your custom option..." class="form-control" id="input-option">
+                                            <span class="input-group-addon" id="add-option">
+                                                <i class="glyphicon glyphicon-plus-sign"></i>
+                                                <input type="submit" value="" class="btn-add-option">
+                                            </span>
+                                        </div>
                                     </div>
-                                <% } %>
-                            </div>
+                                </form>
+                            <% } %>
                             <div class="form-group">
-                                <input type="submit" value="Vote!" class="btn btn-primary">
+                                <input type="submit" for="vote-form" value="Vote!" class="btn btn-primary btn-block">
                             </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3 well">
-                        <canvas id="poll-chart" width="300" height="300"></canvas>
-                    <% if (user && poll.authorId == user.id) { %>
-                        <form action="/poll/delete" method="POST">
-                            <input type="hidden" name="pollId" value="<%= poll.id %>">
-                            <div class="form-group">
-                                <input type="submit" value="Close Poll" class="btn btn-danger center-block">
-                            </div>
-                        </form>
-                    <% } %>
+                            <a href="#" class="btn btn-twitter btn-block">
+                                <i class="glyphicon glyphicon-share"></i>
+                                <span>Share on twitter</span>
+                            </a>
+                            <% if (user && poll.authorId == user.id) { %>
+                                <form action="/poll/delete" method="POST">
+                                    <input type="hidden" name="pollId" value="<%= poll.id %>">
+                                    <div class="form-group">
+                                        <input type="submit" value="Close Poll" class="btn btn-danger btn-block">
+                                    </div>
+                                </form>
+                            <% } %>
+                        </div>
+                        <div class="col-md-5 col-md-offset-2">
+                            <canvas id="poll-chart" width="300" height="300"></canvas>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -66,22 +84,23 @@
                         label: '# of Votes',
                         data: votesArray,
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
+                            'rgba(255, 99, 132, 1)',
                             'rgba(54, 162, 235, 1)',
                             'rgba(255, 206, 86, 1)',
                             'rgba(75, 192, 192, 1)',
                             'rgba(153, 102, 255, 1)',
                             'rgba(255, 159, 64, 1)'
+                            <% if (poll.choices.length > 6) { %>
+                                ,
+                                <% for (var i=6; i < poll.choices.length; i++) { %>
+                                    '<%= 'rgba(' + Math.round(Math.random() * (255)) + ', ' + Math.round(Math.random() * (255)) + ', ' + Math.round(Math.random() * (255)) + ', 1)'  %>'
+                                    <% if (i != poll.choices.length - 1) { %>
+                                        ,
+                                    <% } %>
+                                <% } %>
+                            <% } %>
                         ],
-                        borderWidth: 1
+                        borderWidth: 0
                     }]
                 }
             });

@@ -231,6 +231,29 @@ app.post('/poll/delete',
         }); 
     });
 
+app.post('/poll/add',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        Poll.findById(req.body.pollId, function (err, poll) {
+            if (err) throw err;
+            
+            if (!req.user) {
+                res.redirect('/poll/' + req.body.pollId);
+            }
+            else {
+                var opt = {
+                    option: req.body.option,
+                    votes: 1
+                };
+                poll.choices.push(opt)
+                poll.save(function () {
+                    res.redirect('/poll/' + req.body.pollId);
+                });
+            }
+        }); 
+    });
+
+
 // Redirect undefined routes to root
 app.get('*', function (req, res) {
     res.redirect('/');
