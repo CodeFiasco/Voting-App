@@ -273,7 +273,10 @@ app.post('/poll/add',
                     option: req.body.option,
                     votes: 1
                 };
-                poll.choices.push(opt)
+
+                poll.choices.push(opt);
+                poll.votedIps.push({ ip: ip });
+                
                 poll.save(function () {
                     res.redirect('/poll/' + req.body.pollId);
                 });
