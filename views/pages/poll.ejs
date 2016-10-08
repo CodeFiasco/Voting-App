@@ -41,10 +41,12 @@
                             <div class="form-group">
                                 <input type="submit" for="vote-form" value="Vote!" class="btn btn-primary btn-block">
                             </div>
-                            <a href="#" class="btn btn-twitter btn-block">
-                                <i class="glyphicon glyphicon-share"></i>
-                                <span>Share on twitter</span>
-                            </a>
+                            <div class="form-group">
+                                <a href="https://twitter.com/home?status=<%= encodeURIComponent(poll.question) %>%20-%20answer%20at:%20https%3A//codefiasco-polls.herokuapp.com/poll/<%= poll.id %>" class="btn btn-twitter btn-block">
+                                    <i class="glyphicon glyphicon-share"></i>
+                                    <span>Share on twitter</span>
+                                </a>
+                            </div>
                             <% if (user && poll.authorId == user.id) { %>
                                 <form action="/poll/delete" method="POST">
                                     <input type="hidden" name="pollId" value="<%= poll.id %>">
