@@ -196,7 +196,8 @@ app.get('/poll/:id', function (req, res) {
         if (err) throw err;
         res.render('pages/poll', {
             user: req.user,
-            poll: poll
+            poll: poll,
+            errors: null
         });
     });    
 });
@@ -205,12 +206,31 @@ app.post('/poll', function (req, res) {
     Poll.findById(req.body.pollId, function (err, poll) {
         if (err) throw err;
         
-        poll.choices[req.body.optionIdx].votes += 1;
-        poll.save(function (err) {
-            if (err) throw err;
+        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-            res.redirect('/poll/' + req.body.pollId);
-        });
+        var lookup = {};
+        for (var i = 0, len = poll.votedIps.length; i < len; i++) {
+            lookup[poll.votedIps[i].ip] = poll.votedIps[i];
+        }
+        
+        if (!lookup[ip]) {
+
+            poll.choices[req.body.optionIdx].votes += 1;
+            poll.votedIps.push({ ip: ip });
+            
+            poll.save(function (err) {
+                if (err) throw err;
+
+                res.redirect('/poll/' + req.body.pollId);
+            });
+        }
+        else {
+            res.render('pages/poll', {
+                user: req.user,
+                poll: poll,
+                errors: ['You already voted;']
+            });
+        }
     });    
 });
 
@@ -236,11 +256,19 @@ app.post('/poll/add',
     function (req, res) {
         Poll.findById(req.body.pollId, function (err, poll) {
             if (err) throw err;
-            
+
             if (!req.user) {
                 res.redirect('/poll/' + req.body.pollId);
             }
-            else {
+        
+            var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+            var lookup = {};
+            for (var i = 0, len = poll.votedIps.length; i < len; i++) {
+                lookup[poll.votedIps[i].ip] = poll.votedIps[i];
+            }
+            
+            if (!lookup[ip]) {
                 var opt = {
                     option: req.body.option,
                     votes: 1
@@ -248,6 +276,13 @@ app.post('/poll/add',
                 poll.choices.push(opt)
                 poll.save(function () {
                     res.redirect('/poll/' + req.body.pollId);
+                });
+            }
+            else {
+                res.render('pages/poll', {
+                    user: req.user,
+                    poll: poll,
+                    errors: ['You already voted;']
                 });
             }
         }); 
